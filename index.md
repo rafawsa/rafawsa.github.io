@@ -4,7 +4,7 @@
 
 ### R & Estatística
 
-[Curitiba 156](http://github.com/Abreums/curitiba156/README.md)
+[Curitiba 156](https://abreums.github.io/curitiba156/README.md)
 <img src="images/README-by_ur-4.png?raw=true"/>
 
 ---
