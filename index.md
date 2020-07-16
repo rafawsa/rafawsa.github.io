@@ -4,8 +4,8 @@
 
 ### Category Name 1 
 
-[Project 1 Title](/sample_page)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+[Curitiba 156](http://github.com/Abreums/curitiba156/README.md)
+<img src="images/README-by_ur-4.png?raw=true"/>
 
 ---
 [Project 2 Title](/pdf/sample_presentation.pdf)
