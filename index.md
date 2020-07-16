@@ -2,22 +2,18 @@
 
 ---
 
-### Category Name 1 
+### R & Estatística
 
 [Curitiba 156](http://github.com/Abreums/curitiba156/README.md)
 <img src="images/README-by_ur-4.png?raw=true"/>
 
 ---
-[Project 2 Title](/pdf/sample_presentation.pdf)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
-
----
-[Project 3 Title](http://example.com/)
+[e-commerce](/pdf/sample_presentation.pdf)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
 
-### Category Name 2
+### Organização do Trabalho
 
 - [Project 1 Title](http://example.com/)
 - [Project 2 Title](http://example.com/)
