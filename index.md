@@ -8,7 +8,7 @@
 <img src="images/README-by_ur-4.png?raw=true"/>
 
 ---
-[e-commerce](/pdf/sample_presentation.pdf)
+[Meu currículo](/pdf/Marcos_Abreu.pdf)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
