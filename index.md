@@ -4,7 +4,7 @@
 
 ### R & Estatística
 
-[PIB x Longevidade](https://abreums.github.io/pr_longevidade_scatter/)
+[PIB x Longevidade](https://abreums.github.io/pr_longevidade_scatter/)     
 <img src="images/scatter.png?raw=true"/>
 
 [Curitiba 156](https://abreums.github.io/curitiba156/)
