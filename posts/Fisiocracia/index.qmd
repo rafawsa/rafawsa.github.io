@@ -1,0 +1,29 @@
+---
+title: "Fisiocracia"
+author: "Rafael W S Abreu"
+date: "2022-09-12"
+categories: [news, code, analysis]
+image: "image.jpg"
+---
+
+Identifique resumidamente e estabelece a importância de cada um dos seguintes conceitos, pensadores e obras para a história do pensamento econômico: guildas de mercadores, guildas de artesanos, ordem natural, laissez-faire, Quesnay, Tableau économique, Turgot e classe estéril.
+
+**Guildas de mercadores e Guildas de artesãos**
+
+As guildas de mercadores e de artesãos eram órgãos que surgiram no período medieval e persistiram na França e Inglaterra. Então essas guildas controlavam o direito de exercer comércio na cidade além de ditar os métodos de produção e de colocação no mercado.
+
+**Ordem Natural** & *Laissez-Faire*
+
+A Ordem natural e o Laissez-faire são duas ideias complementares que citam o não envolvimento do estado na economia. Ou seja, o governo não deveria intervir ou intervir minimamente a fim de proteger a vida e a propriedade, além do direito de liberdade.
+
+**Quesnay e Tableau Economique**
+
+Quesnay foi o autor do Tableau Economique. Uma quadro que exemplifica as relações entre setores da economia. O objetivo desse estudo era analisar o fluxo circular de bens e dinheiro dentro da economia
+
+
+Quesnay, como todos outros fisiocratas, acreditava em um absolutismo esclarecido que deveria levar adiante todas essas reformas. Porque, de acordo com ele, apenas os fazendeiros produtores de alimentos e matéria prima produzem um excedente para a sociedade. E chamava as outras classes de 'estéril'
+
+
+**Turgot e as classes estéreis**
+
+Turgot foi o ministro da economia da França durante o final do século XVII. As medidas colocadas por Turgot foram opostas para quase todas as classes. A nobreza o odiava porque ele queria aumentar os impostos sobre a terra. A igreja o considerava um descrente por não ir à missa. A burguesia fazia objeção à sua interferência nos monopólios. E a população trabalhadora o repudiava por querer abaixar os salários a um nível de subsistência.
