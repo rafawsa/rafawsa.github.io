@@ -2,7 +2,7 @@
 title: "Fisiocracia"
 author: "Rafael W S Abreu"
 date: "2022-09-12"
-categories: [news, code, analysis]
+categories: [History, Economy]
 image: "image.jpg"
 ---
 
@@ -20,9 +20,7 @@ A Ordem natural e o Laissez-faire são duas ideias complementares que citam o n�
 
 Quesnay foi o autor do Tableau Economique. Uma quadro que exemplifica as relações entre setores da economia. O objetivo desse estudo era analisar o fluxo circular de bens e dinheiro dentro da economia
 
-
 Quesnay, como todos outros fisiocratas, acreditava em um absolutismo esclarecido que deveria levar adiante todas essas reformas. Porque, de acordo com ele, apenas os fazendeiros produtores de alimentos e matéria prima produzem um excedente para a sociedade. E chamava as outras classes de 'estéril'
-
 
 **Turgot e as classes estéreis**
 

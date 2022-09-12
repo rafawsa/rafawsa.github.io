@@ -1,0 +1,7 @@
+---
+title: "Mercantilismo"
+author: "Rafael W S Abreu"
+date: "2022-09-12"
+categories: [History, Economy]
+image: "image.jpg"
+---
