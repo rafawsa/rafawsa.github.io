@@ -6,14 +6,13 @@ about:
   links:
     - icon: twitter
       text: Twitter
-      href: https://twitter.com
+      href: https://twitter.com/RafaelWSantosA1
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
+      href: https://www.linkedin.com/in/rafael-santos-abreu-5a9215207/
     - icon: github
       text: Github
-      href: https://github.com
-
+      href: https://github.com/rafawsa
 ---
 
 About this blog
