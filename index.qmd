@@ -1,5 +1,5 @@
 ---
-title: "My Quarto Blog"
+title: ""
 listing:
   contents: posts
   sort: "date desc"

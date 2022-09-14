@@ -21,4 +21,8 @@ about:
       href: rafawsantosabreu@gmail.com
 ---
 
-Rafael Wachowicz Santos Abreu é estudante de economia na Universidade Federal do Paraná. Quando não está lendo sobre as ideias do pensamento econômico, Rafael pratica piano e gosta de caminhar ao ar livre.
+Rafael Wachowicz Santos Abreu é estudante de economia na Universidade Federal do Paraná.
+
+Quando não está lendo sobre as ideias do pensamento econômico, Rafael busca aprofundar seus conhecimentos em estatística e econometria, principalmente utilizando o R-Studio
+
+Seus pricipais hobbys são tocar piano, escutar e produzir musica, e também cozinhar nos fins de semana.
