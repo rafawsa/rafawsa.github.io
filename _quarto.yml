@@ -13,7 +13,7 @@ website:
         href: https://twitter.com/RafaelWSantosA1
 format:
   html:
-    theme: cosmo
+    theme: darkly
     css: styles.css
 
 editor: visual
