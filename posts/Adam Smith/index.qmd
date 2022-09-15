@@ -1,0 +1,48 @@
+---
+title: "Quem foi Adam Smith? Por que ele foi tão importante para a Economia"
+author: "Rafael W S Abreu"
+date: "2022-09-15"
+categories: [Economy, History, Adam Smith]
+---
+
+Adam Smith. Considerado o fundador da Economia Política Clássica. Pertenceu ao movimento denominado hoje de Iluminismo escocês. Nesse pequeno texto, baseado em perguntas, serão abordados os dois principais livros "The Theory of Moral Sentiments" e "The Wealth of Nations", destacando suas opiniões sobre o Laissez-Faire, a divisão do trabalho e as leis econômicas de uma economia competitiva.
+
+![AdamSmith](https://upload.wikimedia.org/wikipedia/commons/0/0a/AdamSmith.jpg){width=40%}
+
+**Qual o tema geral de Theory of moral sentiments de Smith? Como está relacionada com The Wealth of Nations?**
+
+Em seu livro "Theory of Moral Sentiments" Adam Smith aborda o comportamento humano baseando-o na solidariedade e empatia. De acordo com o autor, o comportamento humano é conduzido a partir de nossas próprias regras morais, caso violassem as regras nós seríamos punidos com vergonha interior e auto-condenação e, se obedecermos essas regras, seríamos recompensados com uma consciência limpa.
+
+Na passagem mais famosa do livro "Theory of Moral Sentiments" Smith declara que os ricos tendem a economizar e reinvestir, ou seja, os ricos "sem querer" compartilham o produto do seu capital com os mais pobres
+
+Embora eles estejam preocupados apenas com suas conveniências \[\...\] os \[donos de negócios\] são levados por uma mão invisível a fazer a mesma distribuição das necessidades de vida que teria sido feita caso a terra fosse dividida em partes iguais; e assim, sem pretenderem, e sem saberem, eles promovem o interesse da sociedade.
+
+Tanto Moral Sentiments quanto Wealth of Nations reconciliam o indivíduo com o interesse social por meio do princípio da mão invisível. Em Moral sentiments, a compaixão e a benevolência impedem o egoísmo; em The wealth of nations, a competitividade direciona o próprio interesse econômico ao bem social
+
+**Explique o principal apontamento que Smith estava tentando fazer por meio de sua descrição da fábrica de alfinetes. Como essa descrição está relacionada ao seu pedido por escolas públicas?**
+
+O exemplo da fábrica de alfinetes de Smith relata a preocupação com a divisão do trabalho. Segundo o autor, a divisão do trabalho aumenta a quantidade de produção por três razões. Primeiro, cada trabalhador se especializa em cada tarefa e a faz com maior habilidade. Segundo economiza-se tempo pois o trabalhador não precisa se locomover entre uma função e outra. E terceiro já que as tarefas foram simplificadas seria mais fácil desenvolver um maquinário específico
+
+**Em quais circunstâncias Smith poderia ser chamado de um defensor do laissez-faire? Sobre quais bases alguém poderia contestar esse rótulo?**
+
+Smith defende o Laissez-Faire a partir de seu conceito de mão invisível, e para entender a mão invisível é preciso entender o conceito de competitividade. A ação de cada produtor que está tentando obter lucro é contida por outros produtores que estejam tentando ganhar dinheiro. A competitividade reduz o preço dos bens e, consequentemente, o lucro de cada vendedor. Ou seja, a busca pelos próprios interesses tende a produzir bens mais baratos, e assim, o bem social.
+
+Essa harmonia de interesses significaria que a intromissão do governo na economia é indesejável e desnecessária. Mas rotular o autor com propagador do Laissez-Faire pode não ser a melhor opção. Smith via três funções significativas para o governo. Primeiro: proteger a sociedade de um ataque estrangeiro. Segundo: estabelecer a administração da justiça. Por último, o Estado deveria manter instituições públicas a fim de impedir que os empresários obtenham lucros excessivos.
+
+**De acordo com Smith, o que determina o valor de troca em uma economia primária? O que determina o valor de troca em uma economia desenvolvida? Por que Smith preferiu utilizar "controlado pelo trabalho" e "controlado pela moeda" como uma medida do valor de um bem?**
+
+A definição de Smith para uma economia primária seria uma sociedade em que o trabalho é o único recurso escasso, não haveria nenhum tipo de acumulação de capital ou apropriação de terra.
+
+Para Smith o determinante do valor de troca em uma economia primária é o trabalho, ou, em outras palavras, o valor de troca de uma mercadoria é proporcional apenas ao número de horas de trabalho necessárias para adquirir determinado bem.
+
+Já em uma economia desenvolvida, em que há acúmulo de capital e propriedade, o autor percebe que nem sempre a mercadoria que exige mais trabalho será mais valiosa. Isso acontece porque se uma mercadoria (por exemplo, tecido), precisa de um maquinário complexo e caro para ser produzida, enquanto outra (por exemplo, batatas), por mais que necessite de mais horas de trabalho para produzir, a mercadoria que exige menos capital será mais favorecida pelos produtores pois elas evitariam os altos investimentos de capital e ainda resultam no mesmo lucro pelas mesmas horas de trabalho.
+
+**O preço natural definido por Smith é controlado pela oferta, pela demanda ou por ambas?**
+
+Segundo Adam Smith o preço natural de determinado bem é definido pelos valores naturais de salário, rendimento da terra e lucro. Agora, o preço de mercado, que é o valor que a mercadoria é vendida, é sim determinada pelos fluxos de oferta e demanda e tende a flutuar em torno do preço natural. 
+
+**o que é um salário de eficiência? Qual a função desses salários na teoria de desenvolvimento econômico de Smith? Como os salários de eficiência poderiam contribuir para elevar as taxas de desemprego friccional e para as recessões, de acordo com as teorias modernas sobre os salários de eficiência?**
+
+Salários de eficiência, para Smith, são salários com uma valor acima do salário de mercado, a fim de reduzir as faltas dos empregados e a rotatividade dos trabalhadores, assim, no longo prazo, aumentando a produtividade e rentabilidade das empresas.
+
+Portanto, pode-se argumentar que os salários de eficiência podem ajudar a explicar a queda de produção em situações de recessão.

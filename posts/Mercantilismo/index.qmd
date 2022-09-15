@@ -8,7 +8,7 @@ image: "image.jpg"
 
 Thomas Mun
 
-Foi diretor da companhia da Índias Orientais e em sua principal obra \"A Discourse of Trade from England onto the East Indies\" defendeu que a principal fonte de renda de um país seria fruto do comércio exterior. Assim, ao contrário de outros mercantilistas, ele defendia a exportação de ouro para outros países, desde que o total de exportações excedesse o total de importações. Por fim, argumenta em função de um comércio multilateral, em vez de bilateral.
+Foi diretor da companhia da Índias Orientais e em sua principal obra "A Discourse of Trade from England onto the East Indies" defendeu que a principal fonte de renda de um país seria fruto do comércio exterior. Assim, ao contrário de outros mercantilistas, ele defendia a exportação de ouro para outros países, desde que o total de exportações excedesse o total de importações. Por fim, argumenta em função de um comércio multilateral, em vez de bilateral.
 
 \
 Gerard Malynes
@@ -18,7 +18,7 @@ Foi conselheiro do governo Belga sobre questões comerciais. Suas ideias ficaram
 \
 Jean Baptiste Colbert
 
-Foi conselheiro de Luís XIV na França de 1661 a 1683. Ele é o maior representante do mercantilismo na história do pensamento econômico. Colbert era um Bulionista, acreditava que a força do Estado dependia de suas finanças, e que suas finanças dependiam da coleta de impostos e que a coleta de impostos, por sua vez, dependiam da abundância do dinheiro. Ele  era a favor da expansão das exportações e redução de importações. Colbert era a favor de uma população grande, trabalhadora e mal paga, chegando a criar impostos para as classes sociais que ele denominava \"improdutivas\" como freiras, advogados e funcionários públicos ociosos. Colbert também deixou certas pessoas isentas de impostos, como homens que eram pais de dez ou mais crianças e homens que casaram cedo.
+Foi conselheiro de Luís XIV na França de 1661 a 1683. Ele é o maior representante do mercantilismo na história do pensamento econômico. Colbert era um Bulionista, acreditava que a força do Estado dependia de suas finanças, e que suas finanças dependiam da coleta de impostos e que a coleta de impostos, por sua vez, dependiam da abundância do dinheiro. Ele  era a favor da expansão das exportações e redução de importações. Colbert era a favor de uma população grande, trabalhadora e mal paga, chegando a criar impostos para as classes sociais que ele denominava "improdutivas" como freiras, advogados e funcionários públicos ociosos. Colbert também deixou certas pessoas isentas de impostos, como homens que eram pais de dez ou mais crianças e homens que casaram cedo.
 
 \
 
@@ -27,4 +27,3 @@ Sir Willian Petty
 Uma das principais contribuições de Petty para a historia do pensamento economico foi a utilização da matematica para fortalecer seus argumentos 
 
 \
-
