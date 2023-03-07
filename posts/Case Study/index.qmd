@@ -1,0 +1,88 @@
+---
+title: "Business Case"
+subtitle: "Pitch Deck para investidores feito para o processo seletivo de Estágio em RI na Hype Empreendimentos"
+author: "Rafael Santos Abreu"
+format:
+  revealjs: 
+    theme: moon
+    footer: <https://hypeempreendimentos.com.br>
+    logo: images/logo.png
+editor: visual
+---
+
+## Olá, nós somos a Hype
+
+**HISTÓRIA**\
+- Estamos há 13 anos, construindo sonhos em Curitiba e região.
+
+**FOCO**\
+- Nosso Hype são as pessoas
+
+**OBJETIVO**\
+- proporcionar Experiências Extraordinárias!
+
+## Projeto RASERA {.smaller}
+
+::: columns
+::: {.column width="40%"}
+![](images/predio.png) imagem não corresponde ao produto final
+:::
+
+::: {.column width="50%"}
+-   Número de torres: 1
+-   Número de pavimentos: 5
+-   Número de unidades: 40
+-   Número de vagas de garagem: 50
+-   Área total construída: 3.750,57 m²
+:::
+:::
+
+## Oportunidade e Market Size
+
+::: columns
+::: {.column width="50%"}
+![](images/Proje%C3%A7%C3%A3o%20de%20Caixa%20-%20Projeto%20RASERA.png)
+:::
+
+::: {.column width="40%"}
+-   Valor da cota: R\$200.000,00
+-   TIR projetada: 49%
+-   Valor Geral das Vendas: R\$29.386.819,89
+:::
+:::
+
+## Projeção da obra
+
+-   Início da obra: 01/09/2024
+-   Início da Estrutura: 01/01/2025
+-   Início da Alvenaria: 01/06/2025
+-   Início do Acabamento: 01/10/2025
+-   Término da obra: 01/04/2026
+
+## Projeção de Vendas
+
+![](images/tabvendas2.png) ![](images/tabvendas.png)
+
+Com 5 Tipos de Plantas diferentes, projetamos o período de vendas de Maio de 2024 até abril de 2026
+
+## Conheça nossa equipe {.smaller}
+
+::: columns
+::: {.column width="20%"}
+![](images/foto.jpg)
+
+![](images/mateus.png)
+:::
+
+::: {.column width="40%"}
+Rafael Santos Abreu
+
+-   Analista de Dados e Pessoas.
+-   Expert em Customer Experience da Hype
+
+Mateus Montalde
+
+-   Coordenador de Recebíveis
+-   Construtor de Prédios, Sonhos e Pessoas
+:::
+:::
