@@ -1,0 +1,8 @@
+---
+title: "Lendo dados da PNS"
+author: "Rafael W S Abreu"
+date: "2024-06-19"
+categories: [news]
+---
+
+Segue algumas dicas para a leitura de dados da PNS
