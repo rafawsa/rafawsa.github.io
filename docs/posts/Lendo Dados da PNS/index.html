@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rafael W S Abreu">
-<meta name="dcterms.date" content="2022-09-15">
+<meta name="dcterms.date" content="2024-06-19">
 
-<title>Blog do Rafael - Estimadores, Regressões lineares e estimadores R-quadrado</title>
+<title>Blog do Rafael - Lendo dados da PNS</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -103,35 +69,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -168,11 +105,9 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Estimadores, Regressões lineares e estimadores R-quadrado</h1>
+      <h1 class="title">Lendo dados da PNS</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">Econometrics</div>
-                <div class="quarto-category">Stats</div>
-                <div class="quarto-category">R</div>
+                <div class="quarto-category">news</div>
               </div>
                   </div>
   </div>
@@ -190,7 +125,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 15, 2022</p>
+        <p class="date">June 19, 2024</p>
       </div>
     </div>
     
@@ -209,144 +144,7 @@ window.Quarto = {
 
 
 
-<p>###Exercício 1</p>
-<p>Considerando o seguinte estimador para <span class="math inline">\(\mu_{y}\)</span> , a média de Y:</p>
-<p><span class="math display">\[
-\tilde{Y} = \frac{1}{n-1} \sum_{i=1}^{n}  Y_i
-\]</span></p>
-<p>Nesse exercício vamos demonstrar que esse é um estimador enviesado para <span class="math inline">\(\mu_{y}\)</span> .</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># primeiro definimos a função</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Y_tilde <span class="ot">&lt;-</span> <span class="cf">function</span>(x){<span class="fu">sum</span>(x)<span class="sc">/</span>(<span class="fu">length</span>(x)<span class="sc">-</span><span class="dv">1</span>)}</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># em seguida computamos 10.000 estimações aleatórias e salvamos elas em est_biased</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>est_biased <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">expr =</span> <span class="fu">Y_tilde</span>(<span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">5</span>)))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plotamos um histograma de est_biased</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(est_biased)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#quando colocamos uma linha vermelha no meio do grafico </span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#podemos ver que há uma tendencia, </span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#logo visualmente confirmamos que o estimador é enviesado</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">10</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>###Exercício 2</p>
-<p>Em seguida, vamos pegar essa mesma equação, mas dessa vez faremos 1000 observações ao invez de 5</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>est_consistent <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">expr =</span> <span class="fu">Y_tilde</span>(<span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="dv">10</span>, <span class="dv">5</span>)))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(est_consistent)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">10</span>, <span class="at">col=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>###Exercício 3</p>
-<p>Para outro exercicio vamos pegar o pacote com os dados de Boston e fazer a mesma regressão do exercicio do outro post</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> lstat <span class="sc">+</span> crim <span class="sc">+</span> age, <span class="at">data =</span> Boston)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>no final do outro post descobrimos que não é muito significativo comparar <span class="math inline">\(R^2\)</span> dos modelos de regressão com um número de regressores diferentes.</p>
-<p>Para isso é utilizado o <span class="math inline">\(\overline{R^2}\)</span> (R-Quadrado ajustado)</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5559429</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod)<span class="sc">$</span>adj.r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5532892</code></pre>
-</div>
-</div>
-<p>###Exercício 5</p>
-<p>Em um proximo exercício usaremos um pacote “ReadXL” para ler um arquivo .xlsx</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cps <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"cps_ch3.xlsx"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#fazendo um glimpse() podemos descobrir mais sobre os dados.</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#sabendo que a coluna ahe08 é "average hourly earnings" em preços de 2008</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 15,393
-Columns: 3
-$ a_sex &lt;dbl&gt; 1, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 1, 2, 1, 1, 1, 2, 2…
-$ year  &lt;dbl&gt; 1992, 1992, 1992, 1992, 1992, 1992, 1992, 1992, 1992, 1992, 1992…
-$ ahe08 &lt;dbl&gt; 17.162025, 15.338560, 22.942291, 13.283340, 22.122923, 12.167608…</code></pre>
-</div>
-</div>
-<p>###Exercício 6</p>
-<p>Vamos supor agora que a média dos salário/hora é maior que 23$/h. Vamos testar essa hipotese com um nível de significância de 0,05</p>
-<p>Sabendo que os testes de hipotese são:</p>
-<p><span class="math display">\[
-H_0:\mu_{Y_{ahe}}\leq 23.5
-\]</span></p>
-<p>vs</p>
-<p><span class="math display">\[
-H_1:\mu_{Y_{ahe}}&gt;23.5
-\]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tstat <span class="ot">&lt;-</span> (<span class="fu">mean</span>(cps<span class="sc">$</span>ahe08)<span class="sc">-</span><span class="fl">23.5</span>)<span class="sc">/</span>(<span class="fu">sd</span>(cps<span class="sc">$</span>ahe08)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(cps<span class="sc">$</span>ahe08)))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>tstat <span class="sc">&gt;</span> <span class="fu">qnorm</span>(<span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] FALSE</code></pre>
-</div>
-</div>
-<p>Podemos afirmar que os salário/hora dos trabalhadores, em média, é menor que 23$/h.</p>
-<p>Em termos estatísticos: como $\mu$ &lt; 23,5 não és possivel rejeitar H0</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(cps<span class="sc">$</span>ahe08, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">mu =</span> <span class="dv">23</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    One Sample t-test
-
-data:  cps$ahe08
-t = -7.1505, df = 15392, p-value = 1
-alternative hypothesis: true mean is greater than 23
-95 percent confidence interval:
- 22.2618     Inf
-sample estimates:
-mean of x 
- 22.39986 </code></pre>
-</div>
-</div>
-<p>a partir dai podemos ver que o valor t é igual a -7,15 e o p-valor é igual a 1. Então já que o valor ‘t’ é bem baixo, não há chances de rejeitar a hipotese nula. Também como o p-valor é igual a 1 não há nenhuma chance de rejeitar H0.</p>
-<p>###Exercício 7</p>
-<p>Considerando a biblioteca library(ismev) e seus conjuntos de dados: data(portpirie) e data(fremantle).</p>
-<p>Vamos testar para ver se há uma diferença significativa entre o nível do mar anual máximo entre as duas regiões (<span class="math inline">\(\alpha\)</span> = 0,05)</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"portpirie"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"fremantle"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(portpirie, fremantle)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Welch Two Sample t-test
-
-data:  portpirie and fremantle
-t = 3.2036, df = 244.58, p-value = 0.001537
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- 127.3284 533.8424
-sample estimates:
-mean of x mean of y 
- 979.4903  648.9049 </code></pre>
-</div>
-</div>
-<p>Temos: t = 3.20 ; p-valor = 0,0015</p>
-<p>Temos um p-valor menor que <span class="math inline">\(\alpha\)</span>. Logo podemos rejeitar a hipotese nula de que os níveis do mar são iguais em ambas localidades.</p>
+<p>Segue algumas dicas para a leitura de dados da PNS</p>
 
 
 
