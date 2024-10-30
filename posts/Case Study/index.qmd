@@ -1,7 +1,8 @@
 ---
 title: "Business Case"
 subtitle: "Pitch Deck para investidores feito para o processo seletivo de Estágio em RI na Hype Empreendimentos"
-author: "Rafael Santos Abreu"
+author: "Rafael W S Abreu"
+date: "2022-06-19"
 format:
   revealjs: 
     theme: moon

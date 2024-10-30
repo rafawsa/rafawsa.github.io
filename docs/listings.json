@@ -2,7 +2,6 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/Case Study/index.html",
       "/posts/Lendo Dados da PNS/index.html",
       "/posts/Adam Smith/index.html",
       "/posts/EconometriaCap3/index.html",
@@ -10,7 +9,8 @@
       "/posts/Fisiocracia dois/index.html",
       "/posts/Fisiocracia/index.html",
       "/posts/Mercantilismo/index.html",
-      "/posts/welcome/index.html"
+      "/posts/welcome/index.html",
+      "/posts/Case Study/index.html"
     ]
   }
 ]
