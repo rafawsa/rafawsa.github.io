@@ -2,7 +2,96 @@
 title: "Lendo dados da PNS"
 author: "Rafael W S Abreu"
 date: "2024-06-19"
-categories: [news]
+categories: [TCC, R, Stats, Econometrics]
+editor_options: 
+  chunk_output_type: console
 ---
 
 Segue algumas dicas para a leitura de dados da PNS
+
+## Pacotes
+
+Esse Chunk contém todas as bibliotecas usadas no decorrer de todo o trabalho.
+
+```{r, results='hide'}
+library(tidyverse) # utilizar a sintaxe tidyverse com o R
+library(survey)    # análise de pesquisas complexas
+library(srvyr)     # provê notação tidyverse para o pacote survey 
+library(PNSIBGE)   # acesso aos dados da PNS
+library(broom)     # sumariza as informações dos modelos em formato tidy
+library(gt)        # tabelas
+library(gtExtras)  # formatação de tabelas
+```
+
+## Carga de Dados da PNS
+
+Para acessar os dados da PNS usaremos as funções do pacote PNSIBGE [@assuncao_pnsibge_2020]:
+
+```{r}
+# Subgrupo de variáveis desejado:
+variaveis_pns_2013 = c("C006",  # sexo
+                       "C008",  # idade
+                       "J007",  # possui DCNT
+                       "J014",  # Usou serviço saúde nas últimas 2 semanas
+                       "J037",  # Internação nos últimos 12 meses
+                       "J002",  # Deixou de realizar atividades nas 2 últimas semanas por motivo de saúde
+                       "J011"  # Consulta médica nos últimos 12 meses
+                       )
+
+variaveis_pns_2019 = c("C006",  # sexo
+                       "C008",  # idade
+                       "J007",  # possui DCNT
+                       "J014",  # Usou serviço saúde nas últimas 2 semanas
+                       "J037",  # Internação nos últimos 12 meses
+                       "J002",  # Deixou de realizar atividades nas 2 últimas semanas por motivo de saúde
+                       "J01101"  # Consulta médica nos últimos 12 meses
+                       )
+
+# lendo os dados da PNS 2013 
+pns13 <-
+  get_pns(
+    year = 2013,
+    selected = FALSE,
+    anthropometry = FALSE,
+    vars = variaveis_pns_2013,
+    labels = TRUE,
+    design = TRUE)
+
+# Vamos utilizar a versão sem pesos dos dados para obter informações sobre __labels__ e __levels__.
+df_pns13 <-
+  get_pns(
+    year = 2013,
+    selected = FALSE,
+    anthropometry = FALSE,
+    vars = variaveis_pns_2013,
+    labels = TRUE,
+    design = FALSE)
+
+# Vamos trabalhar com o pacote srvyr e não com o survey,
+# por isso precisamos transformar survey.design2 em tbl.svy
+p13 <- srvyr::as_survey(pns13)
+
+## Ajuste dos dados para aplicar regressão de Poisson
+## A regressão de Poisson requer que a variável objetivo seja numérica. 
+## Neste caso vamos ajustar as variáveis categóricas para valores 0 ou 1.
+levels(df_pns13$J007)
+levels(df_pns13$J014)
+levels(df_pns13$J037)
+levels(df_pns13$J002)
+levels(df_pns13$J011)
+levels(df_pns13$C006)
+
+# Vamos mudar o formato que a variável é apresentada para, no futuro, podermos realizar uma regressão de Poisson
+p13 <- 
+  p13 |> 
+  mutate(iJ014 = if_else(J014 == "Não", 0, 1),
+         iJ037 = if_else(J037 == "Não", 0, 1),
+         iJ002 = if_else(J002 == "Não", 0, 1),
+         cJ011 = if_else(J011 == "Nos doze últimos meses", "Sim", "Não"),
+         iJ011 = if_else(J011 == "Nos doze últimos meses", 1, 0)) |> 
+  mutate(J007 = relevel(J007, ref = "Não"))
+
+
+```
+
+No final o objeto "p13" esta pronto para começarmos a análise
