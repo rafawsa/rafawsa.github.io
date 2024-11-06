@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rafael W S Abreu">
-<meta name="dcterms.date" content="2024-06-19">
+<meta name="dcterms.date" content="2024-10-02">
 
-<title>Blog do Rafael - Lendo dados da PNS</title>
+<title>Blog do Rafael - Análise Descritiva da População com DCNT</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -139,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Lendo dados da PNS</h1>
+      <h1 class="title">Análise Descritiva da População com DCNT</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">TCC</div>
                 <div class="quarto-category">R</div>
@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 19, 2024</p>
+        <p class="date">October 2, 2024</p>
       </div>
     </div>
     
@@ -181,109 +181,670 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>Segue algumas dicas para a leitura de dados da PNS.</p>
-<p>Esse é o começo da análise feita para a minha Monografia para o curso de Economia na UFPR. Outros posts com a TAG de “TCC” fazem parte da mesma análise.</p>
-<section id="pacotes" class="level2">
-<h2 class="anchored" data-anchor-id="pacotes">Pacotes</h2>
-<p>Esse Chunk contém todas as bibliotecas usadas no decorrer de todo o trabalho.</p>
+<section id="população-com-dcnt" class="level2">
+<h2 class="anchored" data-anchor-id="população-com-dcnt">População com DCNT</h2>
+<p>A partir dos dados da PNS 2013 podemos identificar o percentual da população brasileira por UF portadora de DCNT.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># utilizar a sintaxe tidyverse com o R</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survey)    <span class="co"># análise de pesquisas complexas</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(srvyr)     <span class="co"># provê notação tidyverse para o pacote survey </span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PNSIBGE)   <span class="co"># acesso aos dados da PNS</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)     <span class="co"># sumariza as informações dos modelos em formato tidy</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)        <span class="co"># tabelas</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)  <span class="co"># formatação de tabelas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Percentuais Populacionais com DCNT ----</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pop_DCNT_Brasil <span class="ot">&lt;-</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  p13 <span class="sc">|&gt;</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(J007) <span class="sc">|&gt;</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_raw =</span> <span class="fu">unweighted</span>(<span class="fu">n</span>()),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">n =</span> <span class="fu">survey_total</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop_raw =</span> n_raw <span class="sc">/</span> <span class="fu">sum</span>(n_raw),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in `[.survey.design2`(out, ind, ): 14 strata have only one PSU in this
+subset.</code></pre>
 </div>
-</section>
-<section id="carga-de-dados-da-pns" class="level2">
-<h2 class="anchored" data-anchor-id="carga-de-dados-da-pns">Carga de Dados da PNS</h2>
-<p>Para acessar os dados da PNS usaremos as funções do pacote PNSIBGE disponível no blog do Garbiel Assunção: <a href="https://rpubs.com/gabriel-assuncao-ibge/pns" class="uri">https://rpubs.com/gabriel-assuncao-ibge/pns</a></p>
-<p>a principal função utilizada é a ‘get_pns()’</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subgrupo de variáveis desejado:</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>variaveis_pns_2013 <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"C006"</span>,  <span class="co"># sexo</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"C008"</span>,  <span class="co"># idade</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J007"</span>,  <span class="co"># possui DCNT</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J014"</span>,  <span class="co"># Usou serviço saúde nas últimas 2 semanas</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J037"</span>,  <span class="co"># Internação nos últimos 12 meses</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J002"</span>,  <span class="co"># Deixou de realizar atividades nas 2 últimas semanas por motivo de saúde</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J011"</span>  <span class="co"># Consulta médica nos últimos 12 meses</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                       )</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>variaveis_pns_2019 <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"C006"</span>,  <span class="co"># sexo</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"C008"</span>,  <span class="co"># idade</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J007"</span>,  <span class="co"># possui DCNT</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J014"</span>,  <span class="co"># Usou serviço saúde nas últimas 2 semanas</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J037"</span>,  <span class="co"># Internação nos últimos 12 meses</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J002"</span>,  <span class="co"># Deixou de realizar atividades nas 2 últimas semanas por motivo de saúde</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"J01101"</span>  <span class="co"># Consulta médica nos últimos 12 meses</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                       )</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># lendo os dados da PNS 2013 </span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>pns13 <span class="ot">&lt;-</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_pns</span>(</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="dv">2013</span>,</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">selected =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">anthropometry =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">vars =</span> variaveis_pns_2013,</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">design =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Vamos utilizar a versão sem pesos dos dados para obter informações sobre __labels__ e __levels__.</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>df_pns13 <span class="ot">&lt;-</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_pns</span>(</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="dv">2013</span>,</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">selected =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">anthropometry =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">vars =</span> variaveis_pns_2013,</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">design =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Vamos trabalhar com o pacote srvyr e não com o survey,</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co"># por isso precisamos transformar survey.design2 em tbl.svy</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>p13 <span class="ot">&lt;-</span> srvyr<span class="sc">::</span><span class="fu">as_survey</span>(pns13)</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="do">## Ajuste dos dados para aplicar regressão de Poisson</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="do">## A regressão de Poisson requer que a variável objetivo seja numérica. </span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="do">## Neste caso vamos ajustar as variáveis categóricas para valores 0 ou 1.</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(df_pns13<span class="sc">$</span>J007)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Sim" "Não"</code></pre>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tibble com o percentual Brasil:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>DCNT_Brasil <span class="ot">&lt;-</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">V0001 =</span> <span class="fu">c</span>(<span class="st">"Brasil"</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop =</span> <span class="fu">c</span>(pop_DCNT_Brasil<span class="sc">$</span>prop[pop_DCNT_Brasil<span class="sc">$</span>J007 <span class="sc">==</span> <span class="st">"Sim"</span>])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># por UF</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>pop_DCNT_por_uf <span class="ot">&lt;-</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  p13 <span class="sc">|&gt;</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(J007, V0001) <span class="sc">|&gt;</span> </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">survey_total</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in `[.survey.design2`(out, ind, ): 1 strata have only one PSU in this
+subset.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(df_pns13<span class="sc">$</span>J014)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Sim" "Não"</code></pre>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in `[.survey.design2`(out, ind, ): 1 strata have only one PSU in this
+subset.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(df_pns13<span class="sc">$</span>J037)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Sim" "Não"</code></pre>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in `[.survey.design2`(out, ind, ): 3 strata have only one PSU in this
+subset.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(df_pns13<span class="sc">$</span>J002)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Sim" "Não"</code></pre>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in `[.survey.design2`(out, ind, ): 1 strata have only one PSU in this
+subset.
+Warning in `[.survey.design2`(out, ind, ): 1 strata have only one PSU in this
+subset.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(df_pns13<span class="sc">$</span>J011)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Nos doze últimos meses"      "De 1 ano a menos de 2 anos" 
-[3] "De 2 anos a menos de 3 anos" "3 anos ou mais"             
-[5] "Nunca foi ao médico"        </code></pre>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in `[.survey.design2`(out, ind, ): 3 strata have only one PSU in this
+subset.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(df_pns13<span class="sc">$</span>C006)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Masculino" "Feminino" </code></pre>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in `[.survey.design2`(out, ind, ): 1 strata have only one PSU in this
+subset.
+Warning in `[.survey.design2`(out, ind, ): 1 strata have only one PSU in this
+subset.
+Warning in `[.survey.design2`(out, ind, ): 1 strata have only one PSU in this
+subset.
+Warning in `[.survey.design2`(out, ind, ): 1 strata have only one PSU in this
+subset.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vamos mudar o formato que a variável é apresentada para, no futuro, podermos realizar uma regressão de Poisson</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>p13 <span class="ot">&lt;-</span> </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  p13 <span class="sc">|&gt;</span> </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">iJ014 =</span> <span class="fu">if_else</span>(J014 <span class="sc">==</span> <span class="st">"Não"</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">iJ037 =</span> <span class="fu">if_else</span>(J037 <span class="sc">==</span> <span class="st">"Não"</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">iJ002 =</span> <span class="fu">if_else</span>(J002 <span class="sc">==</span> <span class="st">"Não"</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">cJ011 =</span> <span class="fu">if_else</span>(J011 <span class="sc">==</span> <span class="st">"Nos doze últimos meses"</span>, <span class="st">"Sim"</span>, <span class="st">"Não"</span>),</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">iJ011 =</span> <span class="fu">if_else</span>(J011 <span class="sc">==</span> <span class="st">"Nos doze últimos meses"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">J007 =</span> <span class="fu">relevel</span>(J007, <span class="at">ref =</span> <span class="st">"Não"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>DCNT_por_uf <span class="ot">&lt;-</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  pop_DCNT_por_uf <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(J007, V0001, n) <span class="sc">|&gt;</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> J007,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> n) <span class="sc">|&gt;</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> Sim<span class="sc">/</span>(Sim <span class="sc">+</span> <span class="st">`</span><span class="at">Não</span><span class="st">`</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(V0001, prop)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fazer loliplot 13-19 ao invés da tabela abaixo! ----</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabela com os resultados 2013</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(DCNT_Brasil, DCNT_por_uf) <span class="sc">|&gt;</span> </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(prop) <span class="sc">|&gt;</span> </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">"Percentual por região da população portadora de DCNT."</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">subtitle =</span> <span class="st">"Pesquisa Nacional de Saúde, 2013."</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_align_table_header</span>(<span class="at">align =</span> <span class="st">"left"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(prop),</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">2</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">V0001 =</span> <span class="fu">md</span>(<span class="st">"**UF**"</span>),</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop =</span> <span class="fu">md</span>(<span class="st">"**População com DCNT**"</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_highlight_rows</span>(</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">rows =</span> V0001 <span class="sc">==</span> <span class="st">"Brasil"</span>,</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"lightgrey"</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="kxpntjjjuf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kxpntjjjuf table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#kxpntjjjuf thead, #kxpntjjjuf tbody, #kxpntjjjuf tfoot, #kxpntjjjuf tr, #kxpntjjjuf td, #kxpntjjjuf th {
+  border-style: none;
+}
+
+#kxpntjjjuf p {
+  margin: 0;
+  padding: 0;
+}
+
+#kxpntjjjuf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#kxpntjjjuf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kxpntjjjuf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kxpntjjjuf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kxpntjjjuf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kxpntjjjuf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kxpntjjjuf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kxpntjjjuf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kxpntjjjuf .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#kxpntjjjuf .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#kxpntjjjuf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kxpntjjjuf .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kxpntjjjuf .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kxpntjjjuf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kxpntjjjuf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kxpntjjjuf .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kxpntjjjuf .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kxpntjjjuf .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#kxpntjjjuf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kxpntjjjuf .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kxpntjjjuf .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kxpntjjjuf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kxpntjjjuf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kxpntjjjuf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kxpntjjjuf .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kxpntjjjuf .gt_left {
+  text-align: left;
+}
+
+#kxpntjjjuf .gt_center {
+  text-align: center;
+}
+
+#kxpntjjjuf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kxpntjjjuf .gt_font_normal {
+  font-weight: normal;
+}
+
+#kxpntjjjuf .gt_font_bold {
+  font-weight: bold;
+}
+
+#kxpntjjjuf .gt_font_italic {
+  font-style: italic;
+}
+
+#kxpntjjjuf .gt_super {
+  font-size: 65%;
+}
+
+#kxpntjjjuf .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#kxpntjjjuf .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kxpntjjjuf .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kxpntjjjuf .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kxpntjjjuf .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kxpntjjjuf .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kxpntjjjuf .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_heading">
+<th colspan="2" class="gt_heading gt_title gt_font_normal">Percentual por região da população portadora de DCNT.</th>
+</tr>
+<tr class="odd gt_heading">
+<th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Pesquisa Nacional de Saúde, 2013.</th>
+</tr>
+<tr class="header gt_col_headings">
+<th id="<strong>UF</strong>" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>UF</strong></th>
+<th id="<strong>População com DCNT</strong>" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><strong>População com DCNT</strong></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Roraima</td>
+<td class="gt_row gt_right" headers="prop">6.85%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Amapá</td>
+<td class="gt_row gt_right" headers="prop">7.15%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Amazonas</td>
+<td class="gt_row gt_right" headers="prop">7.15%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Pará</td>
+<td class="gt_row gt_right" headers="prop">7.40%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Acre</td>
+<td class="gt_row gt_right" headers="prop">8.61%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Rondônia</td>
+<td class="gt_row gt_right" headers="prop">8.84%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Mato Grosso</td>
+<td class="gt_row gt_right" headers="prop">9.12%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Tocantins</td>
+<td class="gt_row gt_right" headers="prop">10.12%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Maranhão</td>
+<td class="gt_row gt_right" headers="prop">11.45%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Espírito Santo</td>
+<td class="gt_row gt_right" headers="prop">12.29%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Paraíba</td>
+<td class="gt_row gt_right" headers="prop">12.47%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Alagoas</td>
+<td class="gt_row gt_right" headers="prop">12.71%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Rio de Janeiro</td>
+<td class="gt_row gt_right" headers="prop">13.20%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Piauí</td>
+<td class="gt_row gt_right" headers="prop">13.47%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Bahia</td>
+<td class="gt_row gt_right" headers="prop">13.60%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Goiás</td>
+<td class="gt_row gt_right" headers="prop">13.87%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Rio Grande do Norte</td>
+<td class="gt_row gt_right" headers="prop">13.96%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Mato Grosso do Sul</td>
+<td class="gt_row gt_right" headers="prop">14.06%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Sergipe</td>
+<td class="gt_row gt_right" headers="prop">14.17%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Ceará</td>
+<td class="gt_row gt_right" headers="prop">14.27%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001" style="background-color: rgba(211,211,211,0.8); color: #000000; font-weight: bold">Brasil</td>
+<td class="gt_row gt_right" headers="prop" style="background-color: rgba(211,211,211,0.8); color: #000000; font-weight: bold">15.04%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Pernambuco</td>
+<td class="gt_row gt_right" headers="prop">15.06%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Distrito Federal</td>
+<td class="gt_row gt_right" headers="prop">15.50%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Santa Catarina</td>
+<td class="gt_row gt_right" headers="prop">16.14%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Paraná</td>
+<td class="gt_row gt_right" headers="prop">16.96%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">São Paulo</td>
+<td class="gt_row gt_right" headers="prop">17.21%</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="V0001">Rio Grande do Sul</td>
+<td class="gt_row gt_right" headers="prop">18.17%</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="V0001">Minas Gerais</td>
+<td class="gt_row gt_right" headers="prop">20.54%</td>
+</tr>
+</tbody>
+</table>
+
 </div>
-<p>No final o objeto “p13” esta pronto para começarmos a análise</p>
+</div>
+</div>
 
 
 </section>

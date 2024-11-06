@@ -1,21 +1,15 @@
 ---
-title: "Lendo dados da PNS"
+title: "Análise Descritiva da População com DCNT"
 author: "Rafael W S Abreu"
-date: "2024-06-19"
+date: "2024-10-02"
 categories: [TCC, R, Stats, Econometrics]
 editor_options: 
   chunk_output_type: console
 ---
 
-Segue algumas dicas para a leitura de dados da PNS.
+## População com DCNT
 
-Esse é o começo da análise feita para a minha Monografia para o curso de Economia na UFPR. Outros posts com a TAG de "TCC" fazem parte da mesma análise.
-
-## Pacotes
-
-Esse Chunk contém todas as bibliotecas usadas no decorrer de todo o trabalho.
-
-```{r, results = 'hide', message=FALSE}
+```{r, results = 'hide', message=FALSE, echo=FALSE}
 library(tidyverse) # utilizar a sintaxe tidyverse com o R
 library(survey)    # análise de pesquisas complexas
 library(srvyr)     # provê notação tidyverse para o pacote survey 
@@ -25,13 +19,7 @@ library(gt)        # tabelas
 library(gtExtras)  # formatação de tabelas
 ```
 
-## Carga de Dados da PNS
-
-Para acessar os dados da PNS usaremos as funções do pacote PNSIBGE disponível no blog do Garbiel Assunção: <https://rpubs.com/gabriel-assuncao-ibge/pns>
-
-a principal função utilizada é a 'get_pns()'
-
-```{r}
+```{r, results = 'hide', message=FALSE, echo=FALSE}
 # Subgrupo de variáveis desejado:
 variaveis_pns_2013 = c("C006",  # sexo
                        "C008",  # idade
@@ -98,4 +86,60 @@ p13 <-
 
 ```
 
-No final o objeto "p13" esta pronto para começarmos a análise
+A partir dos dados da PNS 2013 podemos identificar o percentual da população brasileira por UF portadora de DCNT.
+
+```{r}
+# Percentuais Populacionais com DCNT ----
+pop_DCNT_Brasil <- 
+  p13 |> 
+  group_by(J007) |> 
+  summarise(n_raw = unweighted(n()),
+            n = survey_total()) |> 
+  mutate(prop_raw = n_raw / sum(n_raw),
+         prop = n / sum(n))
+
+# tibble com o percentual Brasil:
+DCNT_Brasil <- 
+  tibble(
+    V0001 = c("Brasil"),
+    prop = c(pop_DCNT_Brasil$prop[pop_DCNT_Brasil$J007 == "Sim"])
+  )
+
+# por UF
+pop_DCNT_por_uf <- 
+  p13 |> 
+  group_by(J007, V0001) |> 
+  summarise(n = survey_total()) |> 
+  mutate(prop = n / sum(n))
+
+DCNT_por_uf <- 
+  pop_DCNT_por_uf |> 
+  select(J007, V0001, n) |> 
+  pivot_wider(names_from = J007,
+              values_from = n) |> 
+  mutate(prop = Sim/(Sim + `Não`)) |> 
+  select(V0001, prop)
+
+# Fazer loliplot 13-19 ao invés da tabela abaixo! ----
+
+# Tabela com os resultados 2013
+rbind(DCNT_Brasil, DCNT_por_uf) |> 
+  arrange(prop) |> 
+  gt() |> 
+  tab_header(title = "Percentual por região da população portadora de DCNT.",
+             subtitle = "Pesquisa Nacional de Saúde, 2013.") |> 
+  opt_align_table_header(align = "left") |> 
+  fmt_percent(
+    columns = c(prop),
+    decimals = 2
+  ) |> 
+  cols_label(
+    V0001 = md("**UF**"),
+    prop = md("**População com DCNT**")
+  ) |> 
+  gt_highlight_rows(
+    rows = V0001 == "Brasil",
+    fill = "lightgrey"
+  )
+  
+```
